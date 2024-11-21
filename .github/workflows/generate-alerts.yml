@@ -70,14 +70,11 @@ jobs:
           process.exit(1); // Exit with error
         }
         EOF
-
-        - name: Commit and Push Dogecoin Shibe Alerts to db.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add db.json
-          git commit -m "Update db.json"
-          git push https://$GITHUB_TOKEN@github.com/qlpqlp/DogeAlerts.git HEAD:main
-      
+        
+    - name: Commit and Push Dogecoin Shibe Alerts to db.json
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add db.json
+        git commit -m "Update db.json"
+        git push
