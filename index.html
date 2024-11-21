@@ -32,11 +32,6 @@
                 <span class="input-group-text"><i class="fa-solid fa-paw"></i></span>
                 <input type="text" class="form-control" id="filter-title" placeholder="Filter by Title">
             </div>
-
-            <div class="input-group mb-3">
-                <span class="input-group-text"><i class="fa-regular fa-comment"></i></span>
-                <input type="text" class="form-control" id="filter-description" placeholder="Filter by Description">
-            </div>
             
             <div class="input-group mb-3">
                 <span class="input-group-text"><i class="fa-solid fa-lock-open"></i></span>
@@ -72,7 +67,6 @@
                 <tr>
                     <th>ID</th>
                     <th>Title</th>
-                    <th>Description</th>
                     <th>Status</th>
                     <th>Type</th>
                     <th>Date</th>
@@ -115,7 +109,7 @@
                             // Such send notification for the new shibe alert
                             if ("Notification" in window && Notification.permission === "granted") {
                                 new Notification(`Shibe Alert: ${latestAlert.title}`, {
-                                    body: latestAlert.description,
+                                    body: latestAlert.url,
                                     icon: 'img/doge-alert.png',
                                 });
                             }
@@ -139,8 +133,7 @@
                             const row = `
                                 <tr>
                                     <td>${alert.id}</td>
-                                    <td>${alert.title}</td>
-                                    <td>${alert.description}</td>
+                                    <td><a href="${alert.url}" target="_blank">${alert.title}</a></td>                                    
                                     <td>${alert.status}</td>
                                     <td>${alert.type}</td>
                                     <td>${alert.datetime}</td>
@@ -166,7 +159,6 @@
             // Such filters logic
             $('.filters input, .filters select').on('change input', function () {
                 const title = $('#filter-title').val().toLowerCase();
-                const description = $('#filter-description').val().toLowerCase();
                 const status = $('#filter-status').val();
                 const type = $('#filter-type').val();
                 const date = $('#filter-date').val();
@@ -174,14 +166,12 @@
                 $('#alert-data tr').each(function () {
                     const row = $(this);
                     const rowTitle = row.find('td:nth-child(2)').text().toLowerCase();
-                    const rowDescription = row.find('td:nth-child(3)').text().toLowerCase();
                     const rowStatus = row.find('td:nth-child(4)').text();
                     const rowType = row.find('td:nth-child(5)').text();
                     const rowDate = row.find('td:nth-child(6)').text();
 
                     const match =
                         (!title || rowTitle.includes(title)) &&
-                        (!description || rowDescription.includes(description)) &&
                         (!status || rowStatus === status) &&
                         (!type || rowType === type) &&
                         (!date || rowDate.startsWith(date));
