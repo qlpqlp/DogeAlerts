@@ -14,7 +14,7 @@ If you don’t have GitHub installed, you can download it from [GitHub's officia
 Clone the repository to your local machine using the following command:
 ```bash
 git clone https://github.com/qlpqlp/DogeAlerts.git
-
+```
 ## Set Up the Folder Structure
 
 Inside the cloned repository, you'll need to set up the `alerts` folder with specific subfolders. If the `alerts` folder doesn't already exist, create it manually.
