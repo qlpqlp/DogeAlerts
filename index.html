@@ -28,39 +28,45 @@
     <div class="container">
         <div class="filters">
 
-            <div class="input-group mb-3">
-                <span class="input-group-text"><i class="fa-solid fa-paw"></i></span>
-                <input type="text" class="form-control" id="filter-title" placeholder="Filter by Title">
-            </div>
-            
-            <div class="input-group mb-3">
-                <span class="input-group-text"><i class="fa-solid fa-lock-open"></i></span>
-                <select class="form-control" id="filter-status">
-                    <option value="">All</option>
-                    <option value="active">Active</option>
-                    <option value="closed">Closed</option>
-                </select>
-            </div>
-            
-            <div class="input-group mb-3">
-                <span class="input-group-text"><i class="fa-solid fa-folder-tree"></i></span>
-                <select class="form-control" id="filter-type">
-                    <option value="">All</option>
-                    <option value="scam">Scam</option>
-                    <option value="warning">Warning</option>
-                    <option value="exchange">Exchange</option>
-                    <option value="wallet">Wallet</option>
-                    <option value="blockchain">Blockchain</option>
-                    <option value="project">Project</option>
-                    <option value="community">Community</option>
-                </select>
-            </div>
-                           
-            <div class="input-group mb-3">
-                <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
-                <input class="form-control" type="date" id="filter-date">
-            </div>            
-            
+            <div class="row">
+                <div class="col-12">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-paw"></i></span>
+                        <input type="text" class="form-control" id="filter-title" placeholder="Filter by Title">
+                    </div>                    
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-lock-open"></i></span>
+                        <select class="form-control" id="filter-status">
+                            <option value="">All</option>
+                            <option value="active">Active</option>
+                            <option value="closed">Closed</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-folder-tree"></i></span>
+                        <select class="form-control" id="filter-type">
+                            <option value="">All</option>
+                            <option value="scam">Scam</option>
+                            <option value="warning">Warning</option>
+                            <option value="exchange">Exchange</option>
+                            <option value="wallet">Wallet</option>
+                            <option value="blockchain">Blockchain</option>
+                            <option value="project">Project</option>
+                            <option value="community">Community</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
+                        <input class="form-control" type="date" id="filter-date">
+                    </div>  
+                </div>                
+              </div> 
         </div>
         <table class="table">
             <thead>
@@ -73,7 +79,7 @@
             </thead>
             <tbody id="alert-data">
                 <tr class="no-records">
-                    <td colspan="6">Much Loading...</td>
+                    <td colspan="4">Much Loading...</td>
                 </tr>
             </tbody>
         </table>
@@ -163,10 +169,10 @@
 
                 $('#alert-data tr').each(function () {
                     const row = $(this);
-                    const rowTitle = row.find('td:nth-child(2)').text().toLowerCase();
-                    const rowStatus = row.find('td:nth-child(4)').text();
-                    const rowType = row.find('td:nth-child(5)').text();
-                    const rowDate = row.find('td:nth-child(6)').text();
+                    const rowTitle = row.find('td:nth-child(1)').text().toLowerCase();
+                    const rowStatus = row.find('td:nth-child(2)').text();
+                    const rowType = row.find('td:nth-child(3)').text();
+                    const rowDate = row.find('td:nth-child(4)').text();
 
                     const match =
                         (!title || rowTitle.includes(title)) &&
