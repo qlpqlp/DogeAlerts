@@ -200,7 +200,7 @@
 
             // Fetch alerts and populate table
             function fetchAlerts() {
-                $.getJSON('alerts.json', function (alerts) {
+                $.getJSON('db.json', function (alerts) {
                     const tableBody = $('#alert-data');
                     tableBody.empty();
 
