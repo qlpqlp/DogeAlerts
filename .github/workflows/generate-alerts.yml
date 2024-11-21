@@ -55,7 +55,7 @@ jobs:
                   type: type,
                   status: status,
                   title: path.basename(file, '.md'),
-                  url: content.trim(),
+                  description: content.trim(),
                   datetime: stats.mtime.toISOString()
                 });
               });

@@ -109,7 +109,7 @@
                             // Such send notification for the new shibe alert
                             if ("Notification" in window && Notification.permission === "granted") {
                                 new Notification(`Shibe Alert: ${latestAlert.title}`, {
-                                    body: latestAlert.url,
+                                    body: latestAlert.description,
                                     icon: 'img/doge-alert.png',
                                 });
                             }
@@ -133,7 +133,7 @@
                             const row = `
                                 <tr>
                                     <td>${alert.id}</td>
-                                    <td><a href="${alert.url}" target="_blank">${alert.title}</a></td>                                    
+                                    <td><a href="${alert.description}" target="_blank">${alert.title}</a></td>                                    
                                     <td>${alert.status}</td>
                                     <td>${alert.type}</td>
                                     <td>${alert.datetime}</td>
