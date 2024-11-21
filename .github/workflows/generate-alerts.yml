@@ -1,0 +1,70 @@
+name: Generate Alerts JSON
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Dependencies
+      run: npm install fs path
+
+    - name: Generate Dogecoin Shibe Alerts JSON
+      run: |
+        node <<EOF
+        const fs = require('fs');
+        const path = require('path');
+
+        const basePath = './alerts';
+        const types = fs.readdirSync(basePath).filter(type => fs.statSync(type).isDirectory());
+        const alerts = [];
+
+        types.forEach(type => {
+          const typePath = path.join(basePath, type);
+          const statuses = fs.readdirSync(typePath).filter(status => fs.statSync(path.join(typePath, status)).isDirectory());
+          
+          statuses.forEach(status => {
+            const statusPath = path.join(typePath, status);
+            const files = fs.readdirSync(statusPath).filter(file => file.endsWith('.md'));
+
+            files.forEach(file => {
+              const filePath = path.join(statusPath, file);
+              const stats = fs.statSync(filePath);
+              const content = fs.readFileSync(filePath, 'utf-8');
+              
+              alerts.push({
+                id: alerts.length + 1,
+                type: type,
+                status: status,
+                title: path.basename(file, '.md'),
+                description: content.trim(),
+                datetime: stats.mtime.toISOString()
+              });
+            });
+          });
+        });
+
+        fs.writeFileSync('db.json', JSON.stringify(alerts, null, 2));
+        console.log('Generated Dogecoin Shibe db.json');
+        EOF
+
+    - name: Commit and Push Dogecoin Shibe Alerts to db.json
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add alerts.json
+        git commit -m "Update alerts.json"
+        git push

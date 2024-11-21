@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doge Alerts - Dogecoin Blockchain and Community Alerts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+    <meta name="description" content="Receive all Doge Coin alerts, Blockchain Problems, Current Active Scams and much more">
+    <meta name="author" content="All Dogecoin Community!">
+    <meta name="generator" content="You!">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Doge Alert">
+    <meta name="twitter:site" content="https://dogealerts.com/">
+    <meta name="twitter:description" content="Receive all Doge Coin alerts, Blockchain Problems, Current Active Scams and much more">
+    <meta name="twitter:image" content="https://dogealerts.com/img/doge-alert.png">
+    <link href="https://dogealerts.com/img/doge-alert.png" rel="icon" />
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>  
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    </head>
+    <style>
+        body {
+            font-family: 'Comic Neue', cursive !important;
+            margin: 0;
+            padding: 0;
+            background-color: #f6f6ef;
+            color: #333;
+        }
+        header {
+            background-color: #ff6600;
+            color: white;
+            padding: 5px 5px 5px;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+        }     
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        .filters {
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        .filters input {
+            padding: 5px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table tr {
+            border-bottom: 1px solid #ddd;
+        }
+        table tr:hover {
+            background-color: #f0f0f0;
+        }
+        table th, table td {
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 14px;
+        }
+        table th {
+            background-color: #f6f6ef;
+            font-weight: normal;
+            color: #666;
+        }
+        .no-records {
+            text-align: center;
+            color: #888;
+        }
+        a {
+            color: #000;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .subscribe-btn {
+            font-size: 14px;
+            color: white;
+            background-color: #ff6600;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .subscribe-btn:hover {
+            background-color: #cc5200;
+        }
+        @media (max-width: 600px) {
+            table th, table td {
+                font-size: 12px;
+                padding: 6px;
+            }
+            .filters input {
+                margin-bottom: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="img/doge-alert.png" alt="Doge Alert" style="max-width: 40px;"> Dogecoin Alerts
+    </header>
+    <div class="container">
+        <div class="filters">
+            <label for="filter-title">Title</label>
+            <input type="text" id="filter-title" placeholder="Filter by Title">
+            
+            <label for="filter-description">Description</label>
+            <input type="text" id="filter-description" placeholder="Filter by Description">
+            
+            <label for="filter-status">Status</label>
+            <select id="filter-status">
+                <option value="">All</option>
+                <option value="Active">Active</option>
+                <option value="Closed">Closed</option>
+            </select>
+            
+            <label for="filter-type">Type</label>
+            <select id="filter-type">
+                <option value="">All</option>
+                <option value="Scam">Scam</option>
+                <option value="Warning">Warning</option>
+                <option value="Exchange">Exchange</option>
+                <option value="Wallet">Wallet</option>
+                <option value="Blockchain">Blockchain</option>
+                <option value="Project">Project</option>
+                <option value="Community">Community</option>
+            </select>
+            
+            <label for="filter-date">Date</label>
+            <input type="date" id="filter-date">
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="alert-data">
+                <tr class="no-records">
+                    <td colspan="6">Much Loading...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Such request Notification Permission
+            function requestNotificationPermission() {
+                if ("Notification" in window) {
+                    Notification.requestPermission()
+                        .then(permission => {
+                            if (permission === "granted") {
+                                console.log("Much wow, shibe notification permission granted.");
+                            } else {
+                                console.log("Much sad, shibe notification permission denied.");
+                            }
+                        });
+                } else {
+                    console.log("Much sad, your browser does not support notifications.");
+                }
+            }
+
+            // Such check for new doge alerts
+            let lastAlertId = null; // Much store the ID of the latest shibe alert
+            function checkForNewAlerts() {
+                $.getJSON('alerts.json', function (alerts) {
+                    if (alerts.length > 0) {
+                        const latestAlert = alerts[alerts.length - 1]; // So Get the most recent alert
+                        if (!lastAlertId || latestAlert.id > lastAlertId) {
+                            lastAlertId = latestAlert.id;
+
+                            // Such send notification for the new shibe alert
+                            if ("Notification" in window && Notification.permission === "granted") {
+                                new Notification(`Shibe Alert: ${latestAlert.title}`, {
+                                    body: latestAlert.description,
+                                    icon: 'img/doge-alert.png',
+                                });
+                            }
+
+                            fetchAlerts();
+                        }
+                    }
+                }).fail(function () {
+                    console.error("Much sad, Failed to fetch alerts.");
+                });
+            }
+
+            // Fetch alerts and populate table
+            function fetchAlerts() {
+                $.getJSON('alerts.json', function (alerts) {
+                    const tableBody = $('#alert-data');
+                    tableBody.empty();
+
+                    if (alerts.length > 0) {
+                        alerts.forEach(alert => {
+                            const row = `
+                                <tr>
+                                    <td>${alert.id}</td>
+                                    <td>${alert.title}</td>
+                                    <td>${alert.description}</td>
+                                    <td>${alert.status}</td>
+                                    <td>${alert.type}</td>
+                                    <td>${alert.datetime}</td>
+                                </tr>
+                            `;
+                            tableBody.append(row);
+                        });
+                    } else {
+                        tableBody.html('<tr class="no-records"><td colspan="6">Much sad, No records found</td></tr>');
+                    }
+                }).fail(function () {
+                    $('#alert-data').html('<tr class="no-records"><td colspan="6">Much sad, Failed to load data</td></tr>');
+                });
+            }
+
+            // So initial fetch and request notifications
+            fetchAlerts();
+            requestNotificationPermission();
+
+            // Much poll for new alerts every 69 seconds
+            setInterval(checkForNewAlerts, 69000);
+
+            // Such filters logic
+            $('.filters input, .filters select').on('change input', function () {
+                const title = $('#filter-title').val().toLowerCase();
+                const description = $('#filter-description').val().toLowerCase();
+                const status = $('#filter-status').val();
+                const type = $('#filter-type').val();
+                const date = $('#filter-date').val();
+
+                $('#alert-data tr').each(function () {
+                    const row = $(this);
+                    const rowTitle = row.find('td:nth-child(2)').text().toLowerCase();
+                    const rowDescription = row.find('td:nth-child(3)').text().toLowerCase();
+                    const rowStatus = row.find('td:nth-child(4)').text();
+                    const rowType = row.find('td:nth-child(5)').text();
+                    const rowDate = row.find('td:nth-child(6)').text();
+
+                    const match =
+                        (!title || rowTitle.includes(title)) &&
+                        (!description || rowDescription.includes(description)) &&
+                        (!status || rowStatus === status) &&
+                        (!type || rowType === type) &&
+                        (!date || rowDate.startsWith(date));
+
+                    row.toggle(match);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
