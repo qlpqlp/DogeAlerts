@@ -43,7 +43,7 @@ jobs:
 
             statuses.forEach(status => {
               const statusPath = path.join(typePath, status);
-              const files = fs.readdirSync(statusPath).filter(file => file.endsWith('.txt'));
+              const files = fs.readdirSync(statusPath).filter(file => file.endsWith('.md'));
 
               files.forEach(file => {
                 const filePath = path.join(statusPath, file);
@@ -54,7 +54,7 @@ jobs:
                   id: alerts.length + 1,
                   type: type,
                   status: status,
-                  title: path.basename(file, '.txt'),
+                  title: path.basename(file, '.md'),
                   url: content.trim(),
                   datetime: stats.mtime.toISOString()
                 });
