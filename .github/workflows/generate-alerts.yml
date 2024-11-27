@@ -43,19 +43,25 @@ jobs:
 
             statuses.forEach(status => {
               const statusPath = path.join(typePath, status);
-              const files = fs.readdirSync(statusPath).filter(file => file.endsWith('.txt'));
+              const files = fs.readdirSync(statusPath).filter(file => file.match(/^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}\.txt$/));
 
               files.forEach(file => {
                 const filePath = path.join(statusPath, file);
                 const stats = fs.statSync(filePath);
                 const content = fs.readFileSync(filePath, 'utf-8');
+                const [url, title] = content.split('\n').map(line => line.trim());
+
+                if (!url || !title) {
+                  console.error(`Invalid file structure in ${filePath}.`);
+                  return;
+                }
 
                 alerts.push({
                   id: alerts.length + 1,
                   type: type,
                   status: status,
-                  title: path.basename(file, '.txt'),
-                  url: content.trim(),
+                  title: title,
+                  url: url,
                   datetime: stats.mtime.toISOString()
                 });
               });
@@ -70,7 +76,7 @@ jobs:
           process.exit(1); // Exit with error
         }
         EOF
-        
+
     - name: Commit and Push Dogecoin Shibe Alerts to db.json
       run: |
         git config user.name "github-actions[bot]"

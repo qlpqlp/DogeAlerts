@@ -36,11 +36,15 @@ Each of these main folders can have two subfolders for status:
 
 ## Creating Alert Posts
 
-For each alert, create a `.txt` file inside the appropriate folder (either under `active` or `closed`). The filename should be the title of the alert, and the content of the file should be the **full URL** where the news or alert is sourced from.
+For each alert, create a `.txt` file inside the appropriate folder (either under `active` or `closed`). The filename should be the Date and Time of the Alert with the format `YYYY-MM-DD_HH-MM-SS.txt` example `2024-11-27_16-20-00.txt`, and the first line inside the `.txt` file should be the **full URL** of the source of the alert and the second line should be the **Title** of the alert.
 
 ### Example:
-- **File Name**: `Dogechain.info wallet shutdown.txt`
-- **File Content**: `https://dogechain.info/wallet/`
+- **File Name**: 
+`2024-11-27_16-20-00.txt`
+
+- **File Content**: 
+`https://dogechain.info/wallet/
+Dogechain.info wallet shutdown`
 
 ---
 
