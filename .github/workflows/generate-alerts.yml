@@ -64,7 +64,7 @@ jobs:
                   status: status,
                   title: title,
                   url: url,
-                  datetime: fileDateTime // Use the filename's date and time
+                  datetime: fileDateTime
                 });
               });
             });
