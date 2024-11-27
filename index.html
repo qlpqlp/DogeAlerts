@@ -14,141 +14,139 @@
     <meta name="twitter:image" content="https://dogealerts.com/img/doge-alert.png">
     <link href="https://dogealerts.com/img/doge-alert.png" rel="icon" />
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="css/doge.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>  
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/doge.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
     <header>
-        <img src="img/doge-alert.png" alt="Doge Alert" style="max-width: 40px;"> Dogecoin Alerts
+        <img src="img/doge-alert.png" alt="Doge Alert" style="max-width: 40px;"> Dogecoin Alerts <a href="https://github.com/qlpqlp/DogeAlerts/" target="_blank" class="btn btn-light" ><i class="fa-brands fa-github"></i> Add Alert</a>
     </header>
     <div class="container">
-        <div class="filters">
-            <!-- Filters -->
+        <div class="filters mb-3">
             <div class="row">
-                <div class="col-12">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text"><i class="fa-solid fa-paw"></i></span>
-                        <input type="text" class="form-control" id="filter-title" placeholder="Filter by Title">
-                    </div>                    
+                <div class="col">
+                    <select class="form-control" id="filter-type">
+                        <option value="">All Types</option>
+                        <option value="scam">Scam</option>
+                        <option value="warning">Warning</option>
+                        <option value="exchange">Exchange</option>
+                        <option value="wallet">Wallet</option>
+                        <option value="blockchain">Blockchain</option>
+                        <option value="project">Project</option>
+                        <option value="community">Community</option>
+                    </select>
                 </div>
                 <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text"><i class="fa-solid fa-lock-open"></i></span>
-                        <select class="form-control" id="filter-status">
-                            <option value="">All</option>
-                            <option value="active">Active</option>
-                            <option value="closed">Closed</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text"><i class="fa-solid fa-folder-tree"></i></span>
-                        <select class="form-control" id="filter-type">
-                            <option value="">All</option>
-                            <option value="scam">Scam</option>
-                            <option value="warning">Warning</option>
-                            <option value="exchange">Exchange</option>
-                            <option value="wallet">Wallet</option>
-                            <option value="blockchain">Blockchain</option>
-                            <option value="project">Project</option>
-                            <option value="community">Community</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text"><i class="fa-solid fa-calendar-days"></i></span>
-                        <input class="form-control" type="date" id="filter-date">
-                    </div>  
+                    <select class="form-control" id="filter-status">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="closed">Closed</option>
+                    </select>
                 </div>                
-            </div> 
+            </div>
         </div>
-        <!-- Table -->
-        <table class="table">
+        <table id="alert-table" class="table table-striped" style="width:100%">
             <thead>
                 <tr>
-                    <th><button class="sort-btn" data-sort="title">Title <i class="fa-solid fa-sort"></i></button></th>
-                    <th><button class="sort-btn" data-sort="status">Status <i class="fa-solid fa-sort"></i></button></th>
-                    <th><button class="sort-btn" data-sort="type">Type <i class="fa-solid fa-sort"></i></button></th>
-                    <th><button class="sort-btn" data-sort="datetime" data-default="desc">Date <i class="fa-solid fa-sort"></i></button></th>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Type</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody id="alert-data">
-                <tr class="no-records">
-                    <td colspan="4">Much Loading...</td>
-                </tr>
             </tbody>
         </table>
     </div>
+
     <script>
         $(document).ready(function () {
-            let alerts = [];
+            let table;
 
-            // Fetch and sort alerts
+            // Fetch and populate table data
             function fetchAlerts() {
-                $.getJSON('db.json', function (data) {
-                    alerts = data;
-                    renderTable();
-                }).fail(function () {
-                    $('#alert-data').html('<tr class="no-records"><td colspan="4">Failed to load data</td></tr>');
-                });
-            }
-
-            function renderTable(sortedAlerts = null) {
+            $.getJSON('db.json', function (data) {
                 const tableBody = $('#alert-data');
                 tableBody.empty();
 
-                const toRender = sortedAlerts || alerts;
+                data.forEach(alert => {
+                    // Determine type badge class
+                    let typeBadgeClass = 'text-bg-light'; // Default
+                    if (alert.type === 'scam') typeBadgeClass = 'text-bg-danger';
+                    else if (alert.type === 'warning') typeBadgeClass = 'text-bg-warning';
 
-                if (toRender.length > 0) {
-                    toRender.forEach(alert => {
-                        const row = `
-                            <tr>
-                                <td><a href="${alert.url}" target="_blank">${alert.title}</a></td>
-                                <td>${alert.status}</td>
-                                <td>${alert.type}</td>
-                                <td>${alert.datetime}</td>
-                            </tr>
-                        `;
-                        tableBody.append(row);
-                    });
-                } else {
-                    tableBody.html('<tr class="no-records"><td colspan="4">No records found</td></tr>');
-                }
-            }
+                    // Determine status badge class
+                    let statusBadgeClass = 'text-bg-success'; // Default
+                    if (alert.status === 'closed') statusBadgeClass = 'text-bg-light';
 
-            // Sorting logic
-            function sortTable(column, direction) {
-                const sorted = [...alerts].sort((a, b) => {
-                    if (column === 'datetime') {
-                        const dateA = new Date(a[column]);
-                        const dateB = new Date(b[column]);
-                        return direction === 'asc' ? dateA - dateB : dateB - dateA;
-                    } else {
-                        const valA = a[column].toLowerCase();
-                        const valB = b[column].toLowerCase();
-                        if (valA < valB) return direction === 'asc' ? -1 : 1;
-                        if (valA > valB) return direction === 'asc' ? 1 : -1;
-                        return 0;
-                    }
+                    const row = `
+                        <tr>
+                            <td><a href="${alert.url}" target="_blank">${alert.title}</a></td>
+                            <td><span class="badge ${statusBadgeClass}">${alert.status}</span></td>
+                            <td><span class="badge ${typeBadgeClass}">${alert.type}</span></td>
+                            <td>${alert.datetime}</td>
+                        </tr>
+                    `;
+                    tableBody.append(row);
                 });
 
-                renderTable(sorted);
+                if (!$.fn.DataTable.isDataTable('#alert-table')) {
+                    initializeDataTable();
+                } else {
+                    table.clear().rows.add($('#alert-data').find('tr')).draw();
+                }
+            });
+        }
+
+
+            // Initialize DataTable
+            function initializeDataTable() {
+                table = $('#alert-table').DataTable({
+                    order: [[3, 'desc']], // Default: order by date descending
+                    columnDefs: [
+                        {
+                            targets: 3, // Format the Date column
+                            render: function (data, type, row) {
+                                if (type === 'display' || type === 'filter') {
+                                    return new Date(data).toLocaleString();
+                                }
+                                return data;
+                            },
+                        },
+                    ],
+                    dom: 'lfrtip',
+                    lengthMenu: [5, 10, 25, 50],
+                });
+
+                addFilterListeners();
             }
 
-            $('.sort-btn').on('click', function () {
-                const column = $(this).data('sort');
-                const currentDirection = $(this).data('direction') || 'desc';
-                const newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
+            // Add filter listeners
+            function addFilterListeners() {
+                $('#filter-title').on('input', function () {
+                    table.column(0).search(this.value).draw();
+                });
 
-                $(this).data('direction', newDirection);
-                sortTable(column, newDirection);
-            });
+                $('#filter-status').on('change', function () {
+                    table.column(1).search(this.value).draw();
+                });
 
+                $('#filter-type').on('change', function () {
+                    table.column(2).search(this.value).draw();
+                });
+
+                $('#filter-date').on('change', function () {
+                    const dateValue = this.value;
+                    table.column(3).search(dateValue).draw();
+                });
+            }
+
+            // Initial fetch
             fetchAlerts();
         });
     </script>

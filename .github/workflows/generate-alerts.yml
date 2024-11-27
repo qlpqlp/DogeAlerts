@@ -56,7 +56,7 @@ jobs:
                 }
 
                 // Extract the datetime from the filename
-                const fileDateTime = file.replace('.txt', '').replace('_', 'T').replace(/-/g, ':').replace('T', 'T');
+                const fileDateTime = file.replace('.txt', '').replace('_', 'T').replace(/-/g, ':');
 
                 alerts.push({
                   id: alerts.length + 1,
