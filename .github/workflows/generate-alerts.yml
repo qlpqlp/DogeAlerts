@@ -34,6 +34,8 @@ jobs:
             return fs.statSync(typePath).isDirectory();
           });
 
+          console.log('Types found:', types); // Debug
+
           types.forEach(type => {
             const typePath = path.join(basePath, type);
             const statuses = fs.readdirSync(typePath).filter(status => {
@@ -41,9 +43,13 @@ jobs:
               return fs.statSync(statusPath).isDirectory();
             });
 
+            console.log('Statuses found for type', type, ':', statuses); // Debug
+
             statuses.forEach(status => {
               const statusPath = path.join(typePath, status);
               const files = fs.readdirSync(statusPath).filter(file => file.match(/^\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2}\.txt$/));
+
+              console.log('Files found for status', status, ':', files); // Debug
 
               files.forEach(file => {
                 const filePath = path.join(statusPath, file);
@@ -55,8 +61,8 @@ jobs:
                   return;
                 }
 
-                // Extract the datetime from the filename
-                const fileDateTime = file.replace('.txt', '').replace('_', 'T').replace(/-/g, ':');
+                // Extract the datetime from the filename with correct format
+                const fileDateTime = file.replace('.txt', '').replace('_', 'T').replace(/-(?=\d{2}:\d{2}:\d{2})/g, ':');
 
                 alerts.push({
                   id: alerts.length + 1,
@@ -64,15 +70,17 @@ jobs:
                   status: status,
                   title: title,
                   url: url,
-                  datetime: fileDateTime
+                  datetime: fileDateTime // Use the filename's date and time
                 });
               });
             });
           });
 
-          // Write the alerts JSON
-          fs.writeFileSync('db.json', JSON.stringify(alerts, null, 2));
-          console.log('Generated db.json successfully.');
+          // Write the alerts JSON with full path
+          const outputPath = path.join(__dirname, 'db.json');
+          fs.writeFileSync(outputPath, JSON.stringify(alerts, null, 2));
+          console.log('Generated db.json successfully at', outputPath);
+
         } catch (error) {
           console.error('Error generating alerts JSON:', error);
           process.exit(1); // Exit with error
