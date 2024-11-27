@@ -14,12 +14,11 @@
     <meta name="twitter:image" content="https://dogealerts.com/img/doge-alert.png">
     <link href="https://dogealerts.com/img/doge-alert.png" rel="icon" />
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />  
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>  
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/doge.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    </head>
 </head>
 <body>
     <header>
@@ -27,7 +26,7 @@
     </header>
     <div class="container">
         <div class="filters">
-
+            <!-- Filters -->
             <div class="row">
                 <div class="col-12">
                     <div class="input-group mb-3">
@@ -66,15 +65,16 @@
                         <input class="form-control" type="date" id="filter-date">
                     </div>  
                 </div>                
-              </div> 
+            </div> 
         </div>
+        <!-- Table -->
         <table class="table">
             <thead>
                 <tr>
-                    <th><b>Title</b></th>
-                    <th><b>Status</b></th>
-                    <th><b>Type</b></th>
-                    <th><b>Date</b></th>
+                    <th><button class="sort-btn" data-sort="title">Title <i class="fa-solid fa-sort"></i></button></th>
+                    <th><button class="sort-btn" data-sort="status">Status <i class="fa-solid fa-sort"></i></button></th>
+                    <th><button class="sort-btn" data-sort="type">Type <i class="fa-solid fa-sort"></i></button></th>
+                    <th><button class="sort-btn" data-sort="datetime" data-default="desc">Date <i class="fa-solid fa-sort"></i></button></th>
                 </tr>
             </thead>
             <tbody id="alert-data">
@@ -86,103 +86,70 @@
     </div>
     <script>
         $(document).ready(function () {
-            // Such request Notification Permission
-            function requestNotificationPermission() {
-                if ("Notification" in window) {
-                    Notification.requestPermission()
-                        .then(permission => {
-                            if (permission === "granted") {
-                                console.log("Much wow, shibe notification permission granted.");
-                            } else {
-                                console.log("Much sad, shibe notification permission denied.");
-                            }
-                        });
+            let alerts = [];
+
+            // Fetch and sort alerts
+            function fetchAlerts() {
+                $.getJSON('db.json', function (data) {
+                    alerts = data;
+                    renderTable();
+                }).fail(function () {
+                    $('#alert-data').html('<tr class="no-records"><td colspan="4">Failed to load data</td></tr>');
+                });
+            }
+
+            function renderTable(sortedAlerts = null) {
+                const tableBody = $('#alert-data');
+                tableBody.empty();
+
+                const toRender = sortedAlerts || alerts;
+
+                if (toRender.length > 0) {
+                    toRender.forEach(alert => {
+                        const row = `
+                            <tr>
+                                <td><a href="${alert.url}" target="_blank">${alert.title}</a></td>
+                                <td>${alert.status}</td>
+                                <td>${alert.type}</td>
+                                <td>${alert.datetime}</td>
+                            </tr>
+                        `;
+                        tableBody.append(row);
+                    });
                 } else {
-                    console.log("Much sad, your browser does not support notifications.");
+                    tableBody.html('<tr class="no-records"><td colspan="4">No records found</td></tr>');
                 }
             }
 
-            // Such check for new doge alerts
-            let lastAlertId = null; // Much store the ID of the latest shibe alert
-            function checkForNewAlerts() {
-                $.getJSON('alerts.json', function (alerts) {
-                    if (alerts.length > 0) {
-                        const latestAlert = alerts[alerts.length - 1]; // So Get the most recent alert
-                        if (!lastAlertId || latestAlert.id > lastAlertId) {
-                            lastAlertId = latestAlert.id;
-
-                            // Such send notification for the new shibe alert
-                            if ("Notification" in window && Notification.permission === "granted") {
-                                new Notification(`Shibe Alert: ${latestAlert.title}`, {
-                                    body: latestAlert.url,
-                                    icon: 'img/doge-alert.png',
-                                });
-                            }
-
-                            fetchAlerts();
-                        }
-                    }
-                }).fail(function () {
-                    console.error("Much sad, Failed to fetch alerts.");
-                });
-            }
-
-            // Fetch alerts and populate table
-            function fetchAlerts() {
-                $.getJSON('db.json', function (alerts) {
-                    const tableBody = $('#alert-data');
-                    tableBody.empty();
-
-                    if (alerts.length > 0) {
-                        alerts.forEach(alert => {
-                            const row = `
-                                <tr>
-                                    <td><a href="${alert.url}" target="_blank">${alert.title}</a></td>                                    
-                                    <td>${alert.status}</td>
-                                    <td>${alert.type}</td>
-                                    <td>${alert.datetime}</td>
-                                </tr>
-                            `;
-                            tableBody.append(row);
-                        });
+            // Sorting logic
+            function sortTable(column, direction) {
+                const sorted = [...alerts].sort((a, b) => {
+                    if (column === 'datetime') {
+                        const dateA = new Date(a[column]);
+                        const dateB = new Date(b[column]);
+                        return direction === 'asc' ? dateA - dateB : dateB - dateA;
                     } else {
-                        tableBody.html('<tr class="no-records"><td colspan="6">Much sad, No records found</td></tr>');
+                        const valA = a[column].toLowerCase();
+                        const valB = b[column].toLowerCase();
+                        if (valA < valB) return direction === 'asc' ? -1 : 1;
+                        if (valA > valB) return direction === 'asc' ? 1 : -1;
+                        return 0;
                     }
-                }).fail(function () {
-                    $('#alert-data').html('<tr class="no-records"><td colspan="6">Much sad, Failed to load data</td></tr>');
                 });
+
+                renderTable(sorted);
             }
 
-            // So initial fetch and request notifications
-            fetchAlerts();
-            requestNotificationPermission();
+            $('.sort-btn').on('click', function () {
+                const column = $(this).data('sort');
+                const currentDirection = $(this).data('direction') || 'desc';
+                const newDirection = currentDirection === 'asc' ? 'desc' : 'asc';
 
-            // Much poll for new alerts every 69 seconds
-            setInterval(checkForNewAlerts, 69000);
-
-            // Such filters logic
-            $('.filters input, .filters select').on('change input', function () {
-                const title = $('#filter-title').val().toLowerCase();
-                const status = $('#filter-status').val();
-                const type = $('#filter-type').val();
-                const date = $('#filter-date').val();
-
-                $('#alert-data tr').each(function () {
-                    const row = $(this);
-                    const rowTitle = row.find('td:nth-child(1)').text().toLowerCase();
-                    const rowStatus = row.find('td:nth-child(2)').text();
-                    const rowType = row.find('td:nth-child(3)').text();
-                    const rowDate = row.find('td:nth-child(4)').text();
-
-                    const match =
-                        (!title || rowTitle.includes(title)) &&
-                        (!status || rowStatus === status) &&
-                        (!type || rowType === type) &&
-                        (!date || rowDate.startsWith(date));
-
-                    row.toggle(match);
-                });
+                $(this).data('direction', newDirection);
+                sortTable(column, newDirection);
             });
+
+            fetchAlerts();
         });
     </script>
 </body>

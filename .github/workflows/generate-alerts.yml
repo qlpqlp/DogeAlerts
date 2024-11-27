@@ -47,7 +47,6 @@ jobs:
 
               files.forEach(file => {
                 const filePath = path.join(statusPath, file);
-                const stats = fs.statSync(filePath);
                 const content = fs.readFileSync(filePath, 'utf-8');
                 const [url, title] = content.split('\n').map(line => line.trim());
 
@@ -56,13 +55,16 @@ jobs:
                   return;
                 }
 
+                // Extract the datetime from the filename
+                const fileDateTime = file.replace('.txt', '').replace('_', 'T').replace(/-/g, ':').replace('T', 'T');
+
                 alerts.push({
                   id: alerts.length + 1,
                   type: type,
                   status: status,
                   title: title,
                   url: url,
-                  datetime: stats.mtime.toISOString()
+                  datetime: fileDateTime // Use the filename's date and time
                 });
               });
             });
