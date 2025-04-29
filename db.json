@@ -41,6 +41,14 @@
   },
   {
     "id": 6,
+    "type": "scam",
+    "status": "active",
+    "title": "Scam warning: @xDogecoinETF that is trying to grab the House of Doge posts to promote the scam token that is not Dogecoin and don't have anything to do with the Doge ETF from 21shares in us There are some shibes following that account that probably don't know they are following a scammer.",
+    "url": "https://x.com/inevitable360/status/1917225782415679935",
+    "datetime": "2025-04-29T21:00:00"
+  },
+  {
+    "id": 7,
     "type": "wallet",
     "status": "active",
     "title": "Dogechain.info wallet shutdown",
